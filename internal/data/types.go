@@ -3,75 +3,89 @@ package data
 import "slices"
 
 type CarTest struct {
-	AssessmentID        int                      `csv:"asm_id"`
-	ProtocolID          int                      `csv:"prot_id"`
-	ID                  int                      `csv:"car_id"`
-	ClassID             int                      `csv:"class_id"`
-	Make                string                   `csv:"make"`
-	Model               string                   `csv:"model"`
-	Year                int                      `csv:"year"`
-	IsHybrid            int                      `csv:"hybrid"`
-	StandardSafetyPack  int                      `csv:"standard"`
-	FullSafetyPack      int                      `csv:"safety"`
-	IsRatingExpired     int                      `csv:"expired"`
-	Stars               int                      `csv:"start"`
-	OverallRating       int                      `csv:"overall_r"`
-	AdultOccupantRating int                      `csv:"adult_r"`
-	ChildOccupantRating int                      `csv:"child_r"`
-	PedestrianRating    int                      `csv:"pedest_r"`
-	SafeAssistRating    int                      `csv:"assist_r"`
-	SafetyEq            SafetyEquipment          `csv:"safety_eq"`
-	AdultOccupantRes    AdultOccupantResult      `csv:"adult_res"`
-	ChildOccupantRes    ChildOccupantResult      `csv:"child_res"`
-	PedestrianRes       VulnerableRoadUserResult `csv:"vru_res"`
-	SafetyAssistRes     SafetyAssistResult       `csv:"safety_res"`
+	Version                  int                      `csv:"vers"`
+	ClassID                  int                      `csv:"class_id"`
+	Make                     string                   `csv:"make"`
+	Model                    string                   `csv:"model"`
+	Year                     int                      `csv:"year"`
+	IsHybrid                 int                      `csv:"hybrid"`
+	FullSafetyPack           int                      `csv:"safety"`
+	Stars                    int                      `csv:"stars"`
+	OverallRating            int                      `csv:"rating"`
+	AdultOccupantRating      int                      `csv:"adult_rating"`
+	ChildOccupantRating      int                      `csv:"child_rating"`
+	VulnerableRoadUserRating int                      `csv:"vru_rating"`
+	SafeAssistRating         int                      `csv:"assist_rating"`
+	SafetyEq                 SafetyEquipment          `csv:"seq"`
+	OtherSafetyEq            OtherSafetyEquipment     `csv:"o_seq"`
+	AdultOccupantRes         AdultOccupantResult      `csv:"adult_result"`
+	ChildOccupantRes         ChildOccupantResult      `csv:"child_result"`
+	VRUResult                VulnerableRoadUserResult `csv:"vru_result"`
+	SafetyAssistRes          SafetyAssistResult       `csv:"safety_result"`
 }
+
 type AdultOccupantResult struct {
 	FrontalImpact      float32 `csv:"frontal_imp"`
 	LateralImpact      float32 `csv:"lateral_imp"`
 	RearImpact         float32 `csv:"rear_imp"`
 	RescueExctrication float32 `csv:"res_ex"`
+	AEBCity            float32 `csv:"aeb_city"`
 }
 
 type ChildOccupantResult struct {
 	FrontalImpact        float32 `csv:"frontal_imp"`
 	LateralImpact        float32 `csv:"lateral_imp"`
 	SafetyFeatures       float32 `csv:"safety_feat"`
-	CRSInstallationCheck float32 `csv:"crs_inst_check"`
-	// SafetyFeaturesFeatures       ChildSafetyFeatures `csv:"safety_feat"`
+	CRSInstallationCheck float32 `csv:"crs_check"`
 }
 
 type VulnerableRoadUserResult struct {
 	ImpactProtectionDetails VRUImpactProtection `csv:"impact_protect"`
 	AEBPedestrian           float32             `csv:"aeb_pedest"`
 	AEBCyclist              float32             `csv:"aeb_cyclist"`
-	// ImpactProtection        float32             `csv:"impact_protect"`
+	CyclistDooring          float32             `csv:"cyclist_dooring"`
+	AEBMotorcyclist         float32             `csv:"aeb_motorcyclist"`
+	LaneSupMotorcyclist     float32             `csv:"lane_sup_motocyc"`
 }
 
 type VRUImpactProtection struct {
-	HeadImpact   float32 `csv:"head_impact"`
-	PelvisImpact float32 `csv:"pelvis_impact"`
-	LegImpact    float32 `csv:"leg_impact"`
+	Head         float32 `csv:"head"`
+	Pelvis       float32 `csv:"pelvis"`
+	Leg          float32 `csv:"leg"`
+	Femur        float32 `csv:"femur"`
+	KneeAndTibia float32 `csv:"knee-tibia"`
 }
 
 type SafetyAssistResult struct {
-	SpeedAssistance          float32 `csv:"speed_assist"`
-	OccupantStatusMonitoring float32 `csv:"occupant_status_mon"`
-	LaneSupport              float32 `csv:"lane_sup"`
-	AEBCarToCar              float32 `csv:"aeb_car_to_car"`
+	SpeedAssistance  float32 `csv:"speed_assist"`
+	SeatbeltReminder float32 `csv:"seatbelt_rem"`
+	DriverMonitoring float32 `csv:"driver_monitoring"`
+	LaneSupport      float32 `csv:"lane_sup"`
+	AEBInterUrban    float32 `csv:"aeb_inter_urban"`
+	AEBCarToCar      float32 `csv:"aeb_car_to_car"`
 }
 
 type SafetyEquipment struct {
-	FrontalCP              SEFrontalCrashProtection `csv:"frontal_crash_p"`
-	LateralCP              SELateralCrashProtection `csv:"lateral_crash_p"`
-	ChildP                 SEChildProtection        `csv:"child_p"`
-	SeatBeltReminder       SEColumns                `csv:"belt_rem"`
-	ActiveBonnet           int8                     `csv:"active_bonnet"`
-	AEBVulnerableRoadUsers int8                     `csv:"aeb_vru"`
-	AEBPedestrianReverse   int8                     `csv:"aeb_pedest"`
-	AEBCarToCar            int8                     `csv:"aeb_car_to_car"`
-	SpeedAssistance        int8                     `csv:"speed_assist"`
-	LaneAssistSystem       int8                     `csv:"lane_assist"`
+	FrontalCP        SEFrontalCrashProtection `csv:"frontal_p"`
+	LateralCP        SELateralCrashProtection `csv:"lateral_p"`
+	ChildP           SEChildProtection        `csv:"child_p"`
+	SeatBeltReminder SEColumns                `csv:"belt_rem"`
+}
+
+type OtherSafetyEquipment struct {
+	ActiveBonnet         int8 `csv:"active_bonnet"`
+	SpeedAssistance      int8 `csv:"speed_assist"`
+	LaneAssistSystem     int8 `csv:"lane_assist"`
+	AEBPedestrian        int8 `csv:"aeb_pedest"`
+	AEBCity              int8 `csv:"aeb_city"`
+	AEBCyclist           int8 `csv:"aeb_cyclist"`
+	AEBInterUrban        int8 `csv:"aeb_inter_urban"`
+	AEBVRU               int8 `csv:"aeb_vru"`
+	AEBPedestrianReverse int8 `csv:"aeb_pedest_reverse"`
+	AEBCarToCar          int8 `csv:"aeb_car_to_car"`
+	CyclistDooringPrev   int8 `csv:"cyclist_door_prev"`
+	AEBMotorcyclist      int8 `csv:"aeb_motorcycle"`
+	FatigueDetection     int8 `csv:"fatigue_detect"`
 }
 
 type SEFrontalCrashProtection struct {
@@ -89,9 +103,10 @@ type SELateralCrashProtection struct {
 }
 
 type SEChildProtection struct {
-	IsofixISize         SEColumns `csv:"isofix_isize"`
-	IntegratedChildSeat SEColumns `csv:"integr_child_seat"`
-	AirbagCutOffSwitch  SEColumns `csv:"ab_cutoff_sw"`
+	IsofixISize            SEColumns `csv:"isofix_isize"`
+	IntegratedChildSeat    SEColumns `csv:"integr_child_seat"`
+	AirbagCutOffSwitch     SEColumns `csv:"ab_cutoff_sw"`
+	ChildPresenceDetection SEColumns `csv:"child_detect"`
 }
 
 type SEColumns struct {
@@ -100,6 +115,121 @@ type SEColumns struct {
 	Rear      int8 `csv:"rear"`
 }
 
+func (ct *CarTest) ToFixedPoints() {
+	switch ct.Version {
+	case 1:
+		ct.v1ToFixesPoints()
+	case 2:
+		ct.v2ToFixesPoints()
+	case 3:
+		ct.v3ToFixesPoints()
+	case 4:
+		ct.v4ToFixesPoints()
+	}
+
+}
+
+func (ct *CarTest) v1ToFixesPoints() {
+
+	ct.AdultOccupantRes.FrontalImpact /= 16
+	ct.AdultOccupantRes.LateralImpact /= 16
+	ct.AdultOccupantRes.RearImpact /= 3
+	ct.AdultOccupantRes.AEBCity /= 3
+
+	ct.ChildOccupantRes.FrontalImpact /= 16
+	ct.ChildOccupantRes.LateralImpact /= 8
+	ct.ChildOccupantRes.SafetyFeatures /= 13
+	ct.ChildOccupantRes.CRSInstallationCheck /= 12
+
+	ct.VRUResult.ImpactProtectionDetails.Head /= 24
+	ct.VRUResult.ImpactProtectionDetails.Pelvis /= 6
+	ct.VRUResult.ImpactProtectionDetails.Leg /= 6
+	ct.VRUResult.AEBPedestrian /= 6
+
+	ct.SafetyAssistRes.SpeedAssistance /= 3
+	ct.SafetyAssistRes.SeatbeltReminder /= 3
+	ct.SafetyAssistRes.LaneSupport /= 3
+	ct.SafetyAssistRes.AEBInterUrban /= 3
+}
+
+func (ct *CarTest) v2ToFixesPoints() {
+
+	ct.AdultOccupantRes.FrontalImpact /= 16
+	ct.AdultOccupantRes.LateralImpact /= 16
+	ct.AdultOccupantRes.RearImpact /= 2
+	ct.AdultOccupantRes.AEBCity /= 4
+
+	ct.ChildOccupantRes.FrontalImpact /= 16
+	ct.ChildOccupantRes.LateralImpact /= 8
+	ct.ChildOccupantRes.SafetyFeatures /= 13
+	ct.ChildOccupantRes.CRSInstallationCheck /= 12
+
+	ct.VRUResult.ImpactProtectionDetails.Head /= 24
+	ct.VRUResult.ImpactProtectionDetails.Pelvis /= 6
+	ct.VRUResult.ImpactProtectionDetails.Leg /= 6
+	ct.VRUResult.AEBPedestrian /= 6
+	ct.VRUResult.AEBCyclist /= 6
+
+	ct.SafetyAssistRes.SpeedAssistance /= 3
+	ct.SafetyAssistRes.SeatbeltReminder /= 3
+	ct.SafetyAssistRes.LaneSupport /= 4
+	ct.SafetyAssistRes.AEBInterUrban /= 3
+}
+
+func (ct *CarTest) v3ToFixesPoints() {
+
+	ct.AdultOccupantRes.FrontalImpact /= 16
+	ct.AdultOccupantRes.LateralImpact /= 16
+	ct.AdultOccupantRes.RearImpact /= 4
+	ct.AdultOccupantRes.RescueExctrication /= 2
+
+	ct.ChildOccupantRes.FrontalImpact /= 16
+	ct.ChildOccupantRes.LateralImpact /= 8
+	ct.ChildOccupantRes.SafetyFeatures /= 13
+	ct.ChildOccupantRes.CRSInstallationCheck /= 12
+
+	ct.VRUResult.ImpactProtectionDetails.Head /= 24
+	ct.VRUResult.ImpactProtectionDetails.Pelvis /= 6
+	ct.VRUResult.ImpactProtectionDetails.Leg /= 6
+	ct.VRUResult.AEBPedestrian /= 9
+	ct.VRUResult.AEBCyclist /= 9
+
+	ct.SafetyAssistRes.SpeedAssistance /= 3
+	ct.SafetyAssistRes.SeatbeltReminder /= 2
+	ct.SafetyAssistRes.DriverMonitoring /= 1
+	ct.SafetyAssistRes.LaneSupport /= 4
+	ct.SafetyAssistRes.AEBCarToCar /= 6
+}
+
+func (ct *CarTest) v4ToFixesPoints() {
+
+	ct.AdultOccupantRes.FrontalImpact /= 16
+	ct.AdultOccupantRes.LateralImpact /= 16
+	ct.AdultOccupantRes.RearImpact /= 4
+	ct.AdultOccupantRes.RescueExctrication /= 4
+
+	ct.ChildOccupantRes.FrontalImpact /= 16
+	ct.ChildOccupantRes.LateralImpact /= 8
+	ct.ChildOccupantRes.SafetyFeatures /= 13
+	ct.ChildOccupantRes.CRSInstallationCheck /= 12
+
+	ct.VRUResult.ImpactProtectionDetails.Head /= 18
+	ct.VRUResult.ImpactProtectionDetails.Pelvis /= 4.5
+	ct.VRUResult.ImpactProtectionDetails.Femur /= 4.5
+	ct.VRUResult.ImpactProtectionDetails.KneeAndTibia /= 9
+
+	ct.VRUResult.AEBPedestrian /= 9
+	ct.VRUResult.AEBCyclist /= 8
+	ct.VRUResult.CyclistDooring /= 1
+	ct.VRUResult.AEBMotorcyclist /= 6
+	ct.VRUResult.LaneSupMotorcyclist /= 3
+
+	ct.SafetyAssistRes.SpeedAssistance /= 3
+	ct.SafetyAssistRes.SeatbeltReminder /= 1
+	ct.SafetyAssistRes.DriverMonitoring /= 2
+	ct.SafetyAssistRes.LaneSupport /= 3
+	ct.SafetyAssistRes.AEBCarToCar /= 9
+}
 func (las LatestAssessmentsSearchResult) Filter(pid []int) []*Assessment {
 	filtered := []*Assessment{}
 	for _, asr := range las.AssessmentSearchResults {
@@ -110,25 +240,21 @@ func (las LatestAssessmentsSearchResult) Filter(pid []int) []*Assessment {
 	return filtered
 }
 
-func (asm Assessment) ParseToCarTest() CarTest {
-	return CarTest{
-		ProtocolID:          asm.ProtocolID,
-		AssessmentID:        asm.AssessmentID,
-		ID:                  asm.ID,
-		ClassID:             asm.ClassID,
-		Make:                asm.Make,
-		Model:               asm.Model,
-		Year:                asm.Year,
-		IsHybrid:            btoi(asm.IsHybrid),
-		StandardSafetyPack:  btoi(asm.StandardSafetyPack),
-		FullSafetyPack:      btoi(asm.FullSafetyPack),
-		IsRatingExpired:     btoi(asm.IsRatingExpired),
-		Stars:               asm.Stars,
-		OverallRating:       asm.OverallRating,
-		ChildOccupantRating: asm.ChildOccupantRating,
-		AdultOccupantRating: asm.AdultOccupantRating,
-		PedestrianRating:    asm.PedestrianRating,
-		SafeAssistRating:    asm.SafeAssistRating,
+func (asm Assessment) ParseToCarTest() *CarTest {
+	return &CarTest{
+		Version:                  int(protocolToVers(asm.ProtocolID)),
+		ClassID:                  asm.ClassID,
+		Make:                     asm.Make,
+		Model:                    asm.Model,
+		Year:                     asm.Year,
+		IsHybrid:                 btoi(asm.IsHybrid),
+		FullSafetyPack:           btoi(asm.FullSafetyPack),
+		Stars:                    asm.Stars,
+		OverallRating:            asm.OverallRating,
+		ChildOccupantRating:      asm.ChildOccupantRating,
+		AdultOccupantRating:      asm.AdultOccupantRating,
+		VulnerableRoadUserRating: asm.PedestrianRating,
+		SafeAssistRating:         asm.SafeAssistRating,
 	}
 }
 
@@ -140,6 +266,40 @@ func btoi(b bool) int {
 	return i
 }
 
+// Determines protocol version by protocol id
+// v1=2016-17, v2=2018-19, v3=2020-22, v4=2023
+func protocolToVers(protocol int) uint8 {
+	v1 := []int{
+		24370, //2016
+		26061, //2017
+	}
+	v2 := []int{
+		30636, //2018
+		34803, //2019
+	}
+	v3 := []int{
+		40302, //2020
+		41776, //2021
+		45155, //2022
+	}
+	v4 := []int{
+		49446, //2023
+	}
+	if slices.Contains(v1, protocol) {
+		return 1
+	}
+	if slices.Contains(v2, protocol) {
+		return 2
+	}
+	if slices.Contains(v3, protocol) {
+		return 3
+	}
+	if slices.Contains(v4, protocol) {
+		return 4
+	}
+	return 0
+}
+
 type LatestAssessmentsSearchResult struct {
 	AssessmentSearchResults []struct {
 		ProtocolID   int           `json:"ProtocolId"`
@@ -148,6 +308,7 @@ type LatestAssessmentsSearchResult struct {
 	} `json:"AssessmentSearchResults"`
 	PreAssessmentSearchResults []any `json:"PreAssessmentSearchResults"`
 }
+
 type Assessment struct {
 	URL                 string `json:"Url"`
 	AssessmentID        int    `json:"AssessmentId"`
